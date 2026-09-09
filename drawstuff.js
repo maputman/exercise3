@@ -308,10 +308,11 @@ function interpRect(imagedata,top,bottom,left,right,globals,tlAttribs,trAttribs,
         lVect = Vector.normalize(lVect);
         var NdotL = Vector.dot(lVect,new Vector(0,0,1)); // rect in xy plane
         
-        // calc diffuse color
-        difColor.r = attribs.diffuse.r * globals.lightCol.r/255 * NdotL;
-        difColor.g = attribs.diffuse.g * globals.lightCol.g/255 * NdotL;
-        difColor.b = attribs.diffuse.b * globals.lightCol.b/255 * NdotL;
+       // calc ambient and diffuse color
+        var ambient = 0.2;
+        difColor.r = attribs.diffuse.r * (ambient + globals.lightCol.r/255 * NdotL);
+        difColor.g = attribs.diffuse.g * (ambient + globals.lightCol.g/255 * NdotL);
+        difColor.b = attribs.diffuse.b * (ambient + globals.lightCol.b/255 * NdotL);
         
         drawPixel(imagedata,pixX,pixY,difColor);
     } // end shade pixel
@@ -391,7 +392,7 @@ function main() {
     var imagedata = context.createImageData(w,h);
  
     // Define a rectangle in 2D with colors and coords at corners
-    var globals = { lightPos: new Vector(250,100,25),  // light over left upper rect
+    var globals = { lightPos: new Vector(100,100,25),  // light over left upper rect
                     lightCol: new Color(255,255,255)}; // light is white
     var tlAttribs = { diffuse: new Color(0,0,255)};    // all four rect verts blue
     var trAttribs = { diffuse: new Color(0,0,255)};
